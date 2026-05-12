@@ -1,22 +1,52 @@
-# Calendar Booking Bot Architecture
+# Архитектура бота для записи на встречи через Google Calendar
 
-Architecture design for a bot that allows guests to book meetings through an organizer's Google Calendar without exposing the organizer's calendar details.
+Тестовое задание: спроектировать архитектуру бота, через которого организатор подключает свой Google Calendar, а гости могут видеть свободные слоты и записываться на встречу без доступа к самому календарю организатора.
 
-## Task
+## Цель
 
-The goal is to design the architecture of a meeting booking bot.
+Описать архитектуру системы, которая позволяет:
 
-The system should cover:
+- авторизовать организатора через Google OAuth 2.0;
+- хранить и обновлять OAuth-токены;
+- показывать гостям только свободные слоты без раскрытия деталей календаря;
+- бронировать слот и создавать событие в Google Calendar;
+- защищаться от двойного бронирования одного слота;
+- отменять встречи и уведомлять обе стороны.
 
-- OAuth 2.0 authorization for the organizer
-- Secure token storage and refresh flow
-- Displaying free slots to guests without exposing private calendar events
-- Booking a slot and creating an event in Google Calendar
-- Protection from double booking
-- Cancellation flow and notifications for both sides
+## Выбранная платформа
 
-## Deliverables
+В качестве платформы выбран Telegram-бот.
 
-- Architecture document: `docs/architecture.md`
-- Architecture diagram: `diagrams/architecture.md`
-- Loom recording plan: `loom.md`
+Причины выбора:
+
+- быстрый и понятный интерфейс для организатора и гостей;
+- удобно реализовать кнопки выбора слотов;
+- можно отправлять уведомления и подтверждения прямо в чат;
+- Telegram-бот хорошо подходит для MVP и демонстрации архитектуры.
+
+## Основные компоненты системы
+
+- **Telegram Bot** — интерфейс для организатора и гостей.
+- **Backend / Bot Service** — основная бизнес-логика: OAuth, генерация слотов, бронирование, отмена.
+- **PostgreSQL** — хранение пользователей, организаторов, правил доступности, бронирований и OAuth-токенов.
+- **Google Calendar API** — получение занятости календаря, создание и отмена событий.
+- **Механизм блокировок / транзакций** — защита от двойного бронирования.
+- **n8n** — опциональный вспомогательный слой для уведомлений и фоновых задач.
+
+## Допущения
+
+В задании не указано, как именно организатор задаёт доступные слоты. Поэтому я принял следующее допущение:
+
+Организатор задаёт правила доступности внутри бота:
+
+- дни недели;
+- временные окна;
+- длительность встречи;
+- буфер между встречами.
+
+Например:
+
+```text
+Пн–Пт, 10:00–18:00
+Длительность встречи: 30 минут
+Буфер между встречами: 10 минут
