@@ -27,26 +27,26 @@
 
 ```mermaid
 flowchart TD
-    U[Гость / Организатор] --> TG[Telegram Bot]
+    USER["Гость / Организатор"] --> TG["Telegram Bot"]
 
-    TG --> BE[Backend / Bot Service]
+    TG --> BACKEND["Backend / Bot Service"]
 
-    BE --> DB[(PostgreSQL)]
-    BE --> GC[Google Calendar API]
-    BE --> N[Notification Layer]
+    BACKEND --> DB["PostgreSQL"]
+    BACKEND --> GOOGLE["Google Calendar API"]
+    BACKEND --> NOTIFY["Notification Layer"]
 
-    N --> TG
+    NOTIFY --> TG
 
-    DB --> USERS[Пользователи]
-    DB --> ORG[Организаторы]
-    DB --> TOKENS[OAuth-токены]
-    DB --> RULES[Правила доступности]
-    DB --> BOOKINGS[Бронирования]
+    DB --> USERS["Пользователи"]
+    DB --> ORG["Организаторы"]
+    DB --> TOKENS["OAuth токены"]
+    DB --> RULES["Правила доступности"]
+    DB --> BOOKINGS["Бронирования"]
 
-    GC --> BUSY[Занятые интервалы]
-    GC --> EVENT[Создание / отмена событий]
+    GOOGLE --> BUSY["Проверка занятости"]
+    GOOGLE --> EVENTS["Создание и отмена событий"]
 
-    BE --> LOCKS[DB transactions / unique constraints]
+    BACKEND --> LOCKS["Транзакции и уникальные ограничения"]
     LOCKS --> BOOKINGS
 ```
 
