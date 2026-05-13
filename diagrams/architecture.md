@@ -1,7 +1,7 @@
 # Архитектурная схема
 
 ```mermaid
-graph TD;
+graph TD
     USER["Гость / Организатор"] --> TG["Telegram Bot"]
 
     TG --> BACKEND["Backend / Bot Service"]
