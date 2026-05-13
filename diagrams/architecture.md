@@ -2,38 +2,7 @@
 ```mermaid
   info
 ```
-```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-```
 
-```mermaid
-graph TD
-    USER["Гость / Организатор"] --> TG["Telegram Bot"]
-
-    TG --> BACKEND["Backend / Bot Service"]
-
-    BACKEND --> DB["PostgreSQL"]
-    BACKEND --> GOOGLE["Google Calendar API"]
-    BACKEND --> NOTIFY["Notification Layer"]
-
-    NOTIFY --> TG
-
-    DB --> USERS["Пользователи"]
-    DB --> ORG["Организаторы"]
-    DB --> TOKENS["OAuth токены"]
-    DB --> RULES["Правила доступности"]
-    DB --> BOOKINGS["Бронирования"]
-
-    GOOGLE --> BUSY["Проверка занятости"]
-    GOOGLE --> EVENTS["Создание и отмена событий"]
-
-    BACKEND --> LOCKS["Транзакции и уникальные ограничения"]
-    LOCKS --> BOOKINGS
-```
 
 ## Пояснение
 
